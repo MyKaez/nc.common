@@ -20,7 +20,10 @@ namespace Ns.Common.FLINQ
 
         public static implicit operator bool(Is<T> @is)
         {
-            return @is.Conditionals.Any(conditional => conditional.Predicates.All(p => p(@is.Value)));
+            return @is.Conditionals.Any() &&
+                   @is.Conditionals.Any(
+                       con =>
+                           con.Predicates.All(p => p.Item2 ? !p.Item1(@is.Value) : p.Item1(@is.Value)));
         }
 
         public override string ToString()
@@ -31,11 +34,6 @@ namespace Ns.Common.FLINQ
 
             return $"Check on '{Value}': " + Environment.NewLine +
                    string.Join(Environment.NewLine, list.Select((l, i) => $"{i + 1}: {l}"));
-        }
-
-        internal void NegateNextPredicate()
-        {
-            Negate = true;
         }
     }
 }

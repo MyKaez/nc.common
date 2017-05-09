@@ -19,7 +19,7 @@ namespace Ns.Common.FLINQ
 
         public static Is<T> Not<T>(this Is<T> @is)
         {
-            @is.NegateNextPredicate();
+            @is.Negate = true;
 
             return @is;
         }

@@ -14,6 +14,9 @@ namespace Ns.Common.FLINQ
         public static Conditional<string> MatchingWildcard(this Is<string> @is, string pattern)
             => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.Wildcard).IsMatch(v));
 
+        public static Conditional<string> Matching(this Is<string> @is, string pattern)
+            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.CharSequence).IsMatch(v));
+
         public static IFilter<string> CreateFilter(this string pattern, StringFilterType filterType)
         {
             switch (filterType)
@@ -22,6 +25,8 @@ namespace Ns.Common.FLINQ
                     return new RegexFilter(pattern);
                 case StringFilterType.Wildcard:
                     return new WildcardFilter(pattern);
+                case StringFilterType.CharSequence:
+                    return new CharSequenceFilter(pattern);
                 default:
                     throw new InvalidCastException($"The filter type '{filterType}' is not mapped yet.");
             }

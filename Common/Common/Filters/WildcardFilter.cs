@@ -10,11 +10,17 @@ namespace Ns.Common.Filters
 
         public WildcardFilter(string pattern)
         {
+            if (pattern == null)
+                throw new ArgumentNullException(nameof(pattern));
+
             _pattern = pattern;
         }
 
         protected override bool IsMatch(string value)
         {
+            if (value == null)
+                throw new ArgumentNullException(nameof(value));
+
             return IsMatch(value, _pattern);
         }
 
@@ -22,9 +28,11 @@ namespace Ns.Common.Filters
         {
             if (value.Is().Not().Given() && pattern.Is().Not().Given())
                 return true;
-            if (pattern.All(c => c == '*'))
+            if (pattern.Any() && pattern.All(c => c == '*'))
                 return true;
-            if (value.Length < pattern.Length && !pattern.Contains('*'))
+            if (value.Length < pattern.Length && pattern.Any() && !pattern.Contains('*'))
+                return false;
+            if (value.Length > pattern.Length && (!pattern.Any() || !pattern.Contains('*')))
                 return false;
 
             var patternChar = pattern.First();

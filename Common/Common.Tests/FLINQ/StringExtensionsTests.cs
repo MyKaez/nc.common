@@ -39,9 +39,9 @@ namespace Ns.Common.Tests.FLINQ
         {
             Assert.Throws(exceptionType, () =>
             {
-                bool x = value.Is().MatchingRegex(pattern);
+                bool con = value.Is().MatchingRegex(pattern);
 
-                Assert.Fail("An exception should have been thrown, instead a result was evaluated: " + x);
+                Assert.Fail("An exception should have been thrown, instead a result was evaluated: " + con);
             });
         }
 
@@ -52,6 +52,7 @@ namespace Ns.Common.Tests.FLINQ
         [TestCase("value", "*value", true)]
         [TestCase("value", "value*", true)]
         [TestCase("value", "*value*", true)]
+        [TestCase("value", "", false)]
         [TestCase("value", "***", true)]
         [TestCase("value", "Z*", false)]
         [TestCase("value", "*Z", false)]
@@ -62,6 +63,43 @@ namespace Ns.Common.Tests.FLINQ
             bool con = value.Is().MatchingWildcard(pattern);
 
             Assert.AreEqual(matching, con);
+        }
+
+        [TestCase(null, "")]
+        [TestCase("", null)]
+        [TestCase(null, null)]
+        public void MatchingWildcard_NoValidInputGiven(string value, string pattern)
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                bool con = value.Is().MatchingWildcard(pattern);
+
+                Assert.Fail("An exception should have been thrown, instead a result was evaluated: " + con);
+            });
+        }
+
+        [TestCase("value", "value", true)]
+        [TestCase("value", "VALUE", true)]
+        [TestCase("value", "", false)]
+        [TestCase("", "value", false)]
+        public void Matching_ValidInputGiven(string value, string pattern, bool matching)
+        {
+            bool con = value.Is().Matching(pattern);
+
+            Assert.AreEqual(matching, con);
+        }
+
+        [TestCase("", null)]
+        [TestCase(null, "")]
+        [TestCase(null, null)]
+        public void Matching_NoValidInputGiven(string value, string pattern)
+        {
+            Assert.Throws<ArgumentNullException>(() =>
+            {
+                bool con = value.Is().Matching(pattern);
+
+                Assert.Fail("An exception should have been thrown, instead a result was evaluated: " + con);
+            });
         }
     }
 }

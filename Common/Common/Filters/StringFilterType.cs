@@ -3,6 +3,7 @@
     public enum StringFilterType
     {
         Regex,
-        Wildcard
+        Wildcard,
+        CharSequence
     }
 }

@@ -6,30 +6,30 @@ namespace Ns.Common.FLINQ
 {
     public class Conditional<T>
     {
-        private readonly List<Predicate<T>> _predicates;
+        private readonly List<Tuple<Predicate<T>, bool>> _predicates;
 
         public Conditional(Is<T> @is)
         {
             Is = @is;
 
-            _predicates = new List<Predicate<T>>();
+            _predicates = new List<Tuple<Predicate<T>, bool>>();
         }
 
         internal Is<T> Is { get; }
 
-        internal IEnumerable<Predicate<T>> Predicates => _predicates;
+        internal IEnumerable<Tuple<Predicate<T>, bool>> Predicates => _predicates;
 
         public override string ToString()
         {
             return string.Join(" AND ", Predicates.Select(GetPredicateCall));
         }
 
-        private string GetPredicateCall(Predicate<T> predicate)
+        private string GetPredicateCall(Tuple<Predicate<T>, bool> predicate)
         {
-            var methodInfo = predicate.Method;
+            var methodInfo = predicate.Item1.Method;
             var methodName = string.Join(string.Empty, methodInfo.Name.Skip(1).TakeWhile(c => c != '>'));
 
-            return methodName + "()";
+            return (predicate.Item2 ? "NOT " : "") + methodName + "()";
         }
 
         public static implicit operator bool(Conditional<T> con) => con.Is;
@@ -38,14 +38,10 @@ namespace Ns.Common.FLINQ
 
         internal void Add(Predicate<T> predicate)
         {
-            if (Is.Negate)
-            {
-                _predicates.Add(v => !predicate(v));
+            _predicates.Add(new Tuple<Predicate<T>, bool>(predicate, Is.Negate));
 
+            if (Is.Negate)
                 Is.Negate = false;
-            }
-            else
-                _predicates.Add(predicate);
         }
     }
 }

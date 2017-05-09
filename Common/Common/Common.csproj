@@ -41,6 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Filters\BaseStringFilter.cs" />
+    <Compile Include="Filters\CharSequenceFilter.cs" />
     <Compile Include="Filters\IFilter.cs" />
     <Compile Include="Filters\RegexFilter.cs" />
     <Compile Include="Filters\StringFilterType.cs" />
