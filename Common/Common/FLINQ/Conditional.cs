@@ -1,47 +1,75 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Ns.Common.FLINQ
 {
     public class Conditional<T>
     {
-        private readonly List<Tuple<Predicate<T>, bool>> _predicates;
+        private readonly bool negate;
 
-        public Conditional(Is<T> @is)
+        internal Conditional(Is<T> @is, Predicate<T> predicate, T value)
         {
-            Is = @is;
+            negate = @is.Negate;
 
-            _predicates = new List<Tuple<Predicate<T>, bool>>();
+            Is = @is;
+            Predicate = predicate;
+            Value = value;
         }
 
         internal Is<T> Is { get; }
 
-        internal IEnumerable<Tuple<Predicate<T>, bool>> Predicates => _predicates;
+        internal Predicate<T> Predicate { get; }
+
+        internal T Value { get; }
+
+        public static implicit operator bool(Conditional<T> conditional)
+        {
+            return conditional.Is;
+        }
 
         public override string ToString()
         {
-            return string.Join(" AND ", Predicates.Select(GetPredicateCall));
+            return @Is.ToString();
         }
 
-        private string GetPredicateCall(Tuple<Predicate<T>, bool> predicate)
+        internal string ToConditionalString()
         {
-            var methodInfo = predicate.Item1.Method;
+           return $"is {GetPredicateCall()}";
+        }
+
+        private string GetPredicateCall()
+        {
+            var methodInfo = Predicate.Method;
             var methodName = string.Join(string.Empty, methodInfo.Name.Skip(1).TakeWhile(c => c != '>'));
+            var builder = new StringBuilder();
 
-            return (predicate.Item2 ? "NOT " : "") + methodName + "()";
+            foreach (var c in methodName)
+            {
+                if (char.IsUpper(c))
+                {
+                    if (builder.Length != 0)
+                        builder.Append(' ');
+
+                    builder.Append(char.ToLower(c));
+                }
+                else
+                {
+                    builder.Append(c);
+                }
+            }
+
+            return (negate ? "not " : "") + $@"{builder} [ ""{Value}"" ]";
         }
 
-        public static implicit operator bool(Conditional<T> con) => con.Is;
-
-        internal string ToConditionalString() => Is.ToString();
-
-        internal void Add(Predicate<T> predicate)
+        internal bool IsOk()
         {
-            _predicates.Add(new Tuple<Predicate<T>, bool>(predicate, Is.Negate));
+            var result = Predicate(Value);
 
-            if (Is.Negate)
-                Is.Negate = false;
+            if (negate)
+                return !result;
+
+            return result;
         }
     }
 }

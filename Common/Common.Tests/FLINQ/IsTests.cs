@@ -17,13 +17,16 @@ namespace Ns.Common.Tests.FLINQ
         [TestCase]
         public void ToString_MethodsAreNamed()
         {
-            var con = "value".Is().Given().And().Not().MatchingRegex(".*");
+            var con = "value".Is().Given().And().Not().MatchingRegex(".*").Or().MatchingWildcard("*");
             var conString = con.ToString();
 
-            Assert.True(conString.Contains("Given"));
-            Assert.True(conString.Contains("AND"));
-            Assert.True(conString.Contains("NOT"));
-            Assert.True(conString.Contains("MatchingRegex"));
+            Assert.True(con);
+            Assert.True(conString.Contains("given"));
+            Assert.True(conString.Contains("and"));
+            Assert.True(conString.Contains("not"));
+            Assert.True(conString.Contains("matching regex"));
+            Assert.True(conString.Contains("or"));
+            Assert.True(conString.Contains("matching wildcard"));
         }
     }
 }

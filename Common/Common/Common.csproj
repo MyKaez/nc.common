@@ -47,6 +47,8 @@
     <Compile Include="Filters\StringFilterType.cs" />
     <Compile Include="Filters\WildcardFilter.cs" />
     <Compile Include="FLINQ\Conditional.cs" />
+    <Compile Include="FLINQ\ConditionType.cs" />
+    <Compile Include="FLINQ\EnumerableExtenstions.cs" />
     <Compile Include="FLINQ\IsExtensions.cs" />
     <Compile Include="FLINQ\Is.cs" />
     <Compile Include="FLINQ\ObjectExtensions.cs" />

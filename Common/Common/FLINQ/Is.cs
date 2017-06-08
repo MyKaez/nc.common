@@ -9,31 +9,31 @@ namespace Ns.Common.FLINQ
         internal Is(T value)
         {
             Value = value;
-            Conditionals = new List<Conditional<T>>();
+            Conditionals = new List<List<Conditional<T>>>();
         }
 
         internal T Value { get; }
 
-        internal ICollection<Conditional<T>> Conditionals { get; }
+        internal List<List<Conditional<T>>> Conditionals { get; set; }
 
         internal bool Negate { get; set; }
 
         public static implicit operator bool(Is<T> @is)
         {
-            return @is.Conditionals.Any() &&
-                   @is.Conditionals.Any(
-                       con =>
-                           con.Predicates.All(p => p.Item2 ? !p.Item1(@is.Value) : p.Item1(@is.Value)));
+            foreach(var con in @is.Conditionals)
+                if (con.Any() && con.All(c => c.IsOk()))
+                    return true;
+
+            return false;
         }
 
         public override string ToString()
         {
-            var list = new List<string>();
+            var list = Conditionals.Select(con => con.Select(c => c.ToConditionalString()).JoinToString(" and "));
+            var checkString = $"Check on '{Value}': " + Environment.NewLine +
+                              string.Join(Environment.NewLine, list.Select((l, i) => $"{i + 1}: {l}"));
 
-            list.AddRange(Conditionals.Select(c => c.ToString()));
-
-            return $"Check on '{Value}': " + Environment.NewLine +
-                   string.Join(Environment.NewLine, list.Select((l, i) => $"{i + 1}: {l}"));
+            return checkString;
         }
     }
 }
