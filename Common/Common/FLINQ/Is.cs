@@ -20,7 +20,7 @@ namespace Ns.Common.FLINQ
 
         public static implicit operator bool(Is<T> @is)
         {
-            foreach(var con in @is.Conditionals)
+            foreach (var con in @is.Conditionals)
                 if (con.Any() && con.All(c => c.IsOk()))
                     return true;
 
@@ -30,7 +30,7 @@ namespace Ns.Common.FLINQ
         public override string ToString()
         {
             var list = Conditionals.Select(con => con.Select(c => c.ToConditionalString()).JoinToString(" and "));
-            var checkString = $"Check on '{Value}': " + Environment.NewLine +
+            var checkString = $"Check on '{typeof (T).FullName}': " + Environment.NewLine +
                               string.Join(Environment.NewLine, list.Select((l, i) => $"{i + 1}: {l}"));
 
             return checkString;

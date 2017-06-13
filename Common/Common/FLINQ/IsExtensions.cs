@@ -34,5 +34,9 @@ namespace Ns.Common.FLINQ
 
             return conditional.Is;
         }
+
+        public static Conditional<T> Null<T>(this Is<T> @is) => @is.CreateConditional(p => p == null, @is.Value);
+
+        public static Conditional<T> OfType<T>(this Is<T> @is) => @is.CreateConditional(p => p.GetType() == typeof(T), @is.Value);
     }
 }
