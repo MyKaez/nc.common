@@ -17,6 +17,15 @@ namespace Ns.Common.FLINQ
         public static Conditional<string> Matching(this Is<string> @is, string pattern)
             => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.CharSequence).IsMatch(v), pattern);
 
+        public static Conditional<string> MatchingStart(this Is<string> @is, string pattern)
+            => @is.CreateConditional(p => p.StartsWith(pattern), @is.Value);
+
+        public static Conditional<string> MatchingEnd(this Is<string> @is, string pattern)
+            => @is.CreateConditional(p => p.EndsWith(pattern), @is.Value);
+
+        public static Conditional<string> MatchingSomewhere(this Is<string> @is, string pattern)
+            => @is.CreateConditional(p => p.Contains(pattern), @is.Value);
+
         public static IFilter<string> CreateFilter(this string pattern, StringFilterType filterType)
         {
             switch (filterType)
