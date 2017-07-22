@@ -54,6 +54,8 @@
     <Compile Include="FLINQ\ObjectExtensions.cs" />
     <Compile Include="FLINQ\StringExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Readers\IConfigReader.cs" />
+    <Compile Include="Readers\IniFile.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

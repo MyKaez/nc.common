@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Ns.Common.FLINQ
@@ -27,5 +29,7 @@ namespace Ns.Common.FLINQ
 
             return builder.ToString();
         }
+
+        public static T Get<T>(this IEnumerable<T> source, int index) => source.Skip(index).First();
     }
 }
