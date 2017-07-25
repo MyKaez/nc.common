@@ -16,6 +16,14 @@ namespace Ns.Common.Tests.FLINQ
         }
 
         [TestCase]
+        public void Not_OnlyNegatesFollowingCondition()
+        {
+            var con = "xxx".Is().Not().MatchingWildcard("yyy").And().Given();
+
+            Assert.True(con);
+        }
+
+        [TestCase]
         public void ToString_MethodsAreNamed()
         {
             var con = "value".Is().Given().And().Not().MatchingRegex(".*");

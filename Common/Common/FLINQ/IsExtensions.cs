@@ -10,6 +10,8 @@ namespace Ns.Common.FLINQ
         {
             var conditional = new Conditional<T>(@is, predicate, value);
 
+            @is.Negate = false;
+
             if (!@is.Conditionals.Any())
                 @is.Conditionals.Add(new List<Conditional<T>>());
             
@@ -25,7 +27,12 @@ namespace Ns.Common.FLINQ
             return @is;
         }
 
-        public static Is<T> And<T>(this Conditional<T> conditional) => conditional.Is;
+        public static Is<T> And<T>(this Conditional<T> conditional)
+        {
+            conditional.Is.Negate = false;
+
+            return conditional.Is;
+        }
 
         public static Is<T> Or<T>(this Conditional<T> conditional)
         {
@@ -37,6 +44,10 @@ namespace Ns.Common.FLINQ
 
         public static Conditional<T> Null<T>(this Is<T> @is) => @is.CreateConditional(p => p == null, @is.Value);
 
-        public static Conditional<T> OfType<T>(this Is<T> @is) => @is.CreateConditional(p => p.GetType() == typeof(T), @is.Value);
+        public static Conditional<T> OfType<T, T2>(this Is<T> @is)
+            => @is.CreateConditional(p =>
+            {
+                return p.GetType() == typeof (T2);
+            }, @is.Value);
     }
 }

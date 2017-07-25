@@ -9,13 +9,13 @@ namespace Ns.Common.FLINQ
             => @is.CreateConditional(v => ignoreWhitespaces ? !string.IsNullOrWhiteSpace(v) : !string.IsNullOrEmpty(v), @is.Value);
 
         public static Conditional<string> MatchingRegex(this Is<string> @is, string pattern)
-            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.Regex).IsMatch(v), pattern);
+            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.Regex).IsMatch(v), @is.Value);
 
         public static Conditional<string> MatchingWildcard(this Is<string> @is, string pattern)
-            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.Wildcard).IsMatch(v), pattern);
+            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.Wildcard).IsMatch(v), @is.Value);
 
         public static Conditional<string> Matching(this Is<string> @is, string pattern)
-            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.CharSequence).IsMatch(v), pattern);
+            => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.CharSequence).IsMatch(v), @is.Value);
 
         public static Conditional<string> MatchingStart(this Is<string> @is, string pattern)
             => @is.CreateConditional(p => p.StartsWith(pattern), @is.Value);

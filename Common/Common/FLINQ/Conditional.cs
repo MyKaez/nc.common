@@ -6,11 +6,9 @@ namespace Ns.Common.FLINQ
 {
     public class Conditional<T>
     {
-        private readonly bool negate;
-
         internal Conditional(Is<T> @is, Predicate<T> predicate, T value)
         {
-            negate = @is.Negate;
+            Negate = @is.Negate;
 
             Is = @is;
             Predicate = predicate;
@@ -22,6 +20,8 @@ namespace Ns.Common.FLINQ
         internal Predicate<T> Predicate { get; }
 
         internal T Value { get; }
+
+        internal bool Negate { get; set; }
 
         public static implicit operator bool(Conditional<T> conditional)
         {
@@ -59,14 +59,14 @@ namespace Ns.Common.FLINQ
                 }
             }
 
-            return (negate ? "not " : "") + $@"{builder} [ ""{Value}"" ]";
+            return (Negate ? "not " : "") + $@"{builder} [ ""{Value}"" ]";
         }
 
         internal bool IsOk()
         {
             var result = Predicate(Value);
 
-            if (negate)
+            if (Negate)
                 return !result;
 
             return result;

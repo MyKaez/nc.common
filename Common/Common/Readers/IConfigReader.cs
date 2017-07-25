@@ -11,5 +11,9 @@ namespace Ns.Common.Readers
         IEnumerable<string> GetEntries();
 
         string GetString(string key);
+
+        IEnumerable<string> GetStrings(string key);
+
+        IConfigReader Parent { get; }
     }
 }

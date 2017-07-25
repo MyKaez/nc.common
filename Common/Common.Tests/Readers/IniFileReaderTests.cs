@@ -171,5 +171,46 @@ Key=Value3
             foreach (var entry in ini.GetEntries())
                 Assert.AreEqual("Value3", ini.GetString(entry));
         }
+
+        [TestCase]
+        public void GetStrings_ListOfStringsCanBeRead()
+        {
+            const string content = @"
+[Option]
+@Key=Val0
+@Key=Val1
+@Key=Val2
+";
+
+            var ini = IniFile.Parse(content);
+            var values = ini.GetStrings("Key").ToArray();
+
+            Assert.AreEqual(3, values.Length);
+
+            for (var i = 0; i < values.Length; i++)
+                Assert.AreEqual("Val" + i, values[i]);
+        }
+
+        [TestCase]
+        public void GetStrings_ListOfStringsAndSingleStringWithSameKey()
+        {
+            const string content = @"
+[Option]
+Key=Val
+@Key=Val0
+@Key=Val1
+@Key=Val2
+";
+
+            var ini = IniFile.Parse(content);
+            var values = ini.GetStrings("Key").ToArray();
+
+            Assert.AreEqual(3, values.Length);
+
+            for (var i = 0; i < values.Length; i++)
+                Assert.AreEqual("Val" + i, values[i]);
+
+            Assert.AreEqual("Val", ini.GetString("Key"));
+        }
     }
 }
