@@ -33,7 +33,7 @@ namespace Ns.Common.Readers
         {
             return _reader.Peek();
         }
-        
+
         public override void Close()
         {
             _reader.Close();

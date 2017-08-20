@@ -125,7 +125,7 @@ namespace Ns.Common.Readers
                     ? ini.Parent.As<IniFile>()
                     : ini;
 
-                var child = new IniFile(parent) { Section = section };
+                var child = new IniFile(parent) {Section = section};
 
                 parent._children.Add(child);
             }

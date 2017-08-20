@@ -6,7 +6,9 @@ namespace Ns.Common.FLINQ
     public static class StringExtensions
     {
         public static Conditional<string> Given(this Is<string> @is, bool ignoreWhitespaces = true)
-            => @is.CreateConditional(v => ignoreWhitespaces ? !string.IsNullOrWhiteSpace(v) : !string.IsNullOrEmpty(v), @is.Value);
+            =>
+                @is.CreateConditional(
+                    v => ignoreWhitespaces ? !string.IsNullOrWhiteSpace(v) : !string.IsNullOrEmpty(v), @is.Value);
 
         public static Conditional<string> MatchingRegex(this Is<string> @is, string pattern)
             => @is.CreateConditional(v => pattern.CreateFilter(StringFilterType.Regex).IsMatch(v), @is.Value);

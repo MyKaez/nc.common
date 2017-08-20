@@ -46,6 +46,7 @@
   <ItemGroup>
     <Compile Include="FLINQ\IsTests.cs" />
     <Compile Include="FLINQ\StringExtensionsTests.cs" />
+    <Compile Include="Mappings\MapperConfigTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Readers\IniFileReaderTests.cs" />
   </ItemGroup>

@@ -14,7 +14,7 @@ namespace Ns.Common.FLINQ
 
             if (!@is.Conditionals.Any())
                 @is.Conditionals.Add(new List<Conditional<T>>());
-            
+
             @is.Conditionals.Last().Add(conditional);
 
             return conditional;
@@ -23,7 +23,7 @@ namespace Ns.Common.FLINQ
         public static Is<T> Not<T>(this Is<T> @is)
         {
             @is.Negate = !@is.Negate;
-            
+
             return @is;
         }
 
@@ -45,9 +45,6 @@ namespace Ns.Common.FLINQ
         public static Conditional<T> Null<T>(this Is<T> @is) => @is.CreateConditional(p => p == null, @is.Value);
 
         public static Conditional<T> OfType<T, T2>(this Is<T> @is)
-            => @is.CreateConditional(p =>
-            {
-                return p.GetType() == typeof (T2);
-            }, @is.Value);
+            => @is.CreateConditional(p => { return p.GetType() == typeof (T2); }, @is.Value);
     }
 }

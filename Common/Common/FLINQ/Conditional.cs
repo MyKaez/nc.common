@@ -35,7 +35,7 @@ namespace Ns.Common.FLINQ
 
         internal string ToConditionalString()
         {
-           return $"is {GetPredicateCall()}";
+            return $"is {GetPredicateCall()}";
         }
 
         private string GetPredicateCall()
